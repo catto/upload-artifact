@@ -7057,7 +7057,7 @@ class UploadHttpClient {
                         failedChunkSizes += chunkSize;
                         continue;
                     }
-                    core.info(`Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
+                    core.info(`${new Date().toISOString()}: Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
                     const result = yield this.uploadChunk(httpClientIndex, parameters.resourceUrl, () => fs.createReadStream(uploadFilePath, {
                         start,
                         end,
@@ -7102,6 +7102,7 @@ class UploadHttpClient {
             // prepare all the necessary headers before making any http call
             const headers = utils_1.getUploadHeaders('application/octet-stream', true, isGzip, totalFileSize, end - start + 1, utils_1.getContentRange(start, end, uploadFileSize));
             const uploadChunkRequest = () => __awaiter(this, void 0, void 0, function* () {
+		core.info(`${new Date().toISOString()}: uploadChunkRequest`);
                 const client = this.uploadHttpManager.getClient(httpClientIndex);
                 return yield client.sendStream('PUT', resourceUrl, openStream(), headers);
             });
@@ -7139,6 +7140,7 @@ class UploadHttpClient {
                 let response;
                 try {
                     response = yield uploadChunkRequest();
+		    core.info(`${new Date().toISOString()}: after yield`);
                 }
                 catch (error) {
                     // if an error is caught, it is usually indicative of a timeout so retry the upload
