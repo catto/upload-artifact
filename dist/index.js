@@ -5816,12 +5816,15 @@ class HttpClient {
                 onResult(err, res);
             }
         };
+	let setIntervalId;
         console.log(`${new Date().toISOString()}: Start sending payload`);
         let req = info.httpModule.request(info.options, (msg) => {
-            console.log(`${new Date().toISOString()}: Got response: ${msg}`);
+	    clearInterval(setIntervalId);
+            console.log(`${new Date().toISOString()}: Got response`);
             let res = new HttpClientResponse(msg);
             handleResult(null, res);
         });
+	setIntervalId = setInterval(() => console.log(`${new Date().toISOString()}: Uploading... ${req.req.connection._bytesDispatched}`), 250);
         req.on('socket', sock => {
             socket = sock;
         });
