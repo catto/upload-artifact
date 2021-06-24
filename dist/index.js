@@ -5816,7 +5816,9 @@ class HttpClient {
                 onResult(err, res);
             }
         };
+        console.log(`${new Date().toISOString()}: Start sending payload`);
         let req = info.httpModule.request(info.options, (msg) => {
+            console.log(`${new Date().toISOString()}: Got response: ${msg}`);
             let res = new HttpClientResponse(msg);
             handleResult(null, res);
         });
