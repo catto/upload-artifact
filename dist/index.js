@@ -5761,6 +5761,7 @@ class HttpClient {
             }
             if (HttpResponseRetryCodes.indexOf(response.message.statusCode) == -1) {
                 // If not a retry code, return immediately instead of retrying
+                console.log(`${new Date().toISOString()}: End client.request`);
                 return response;
             }
             numTries += 1;
