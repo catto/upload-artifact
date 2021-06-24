@@ -7041,7 +7041,7 @@ class UploadHttpClient {
                     uploadFilePath = parameters.file;
                     isGzip = false;
                 }
-                let abortFileUpload = false;
+                let abortFileUpload = false; let chunkIndex = 0;
                 // upload only a single chunk at a time
                 while (offset < uploadFileSize) {
                     const chunkSize = Math.min(uploadFileSize - offset, parameters.maxChunkSize);
@@ -7057,6 +7057,7 @@ class UploadHttpClient {
                         failedChunkSizes += chunkSize;
                         continue;
                     }
+                    core.info(`Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
                     const result = yield this.uploadChunk(httpClientIndex, parameters.resourceUrl, () => fs.createReadStream(uploadFilePath, {
                         start,
                         end,
@@ -7070,6 +7071,7 @@ class UploadHttpClient {
                         core.warning(`Aborting upload for ${parameters.file} due to failure`);
                         abortFileUpload = true;
                     }
+		    chunkIndex++;
                 }
                 // Delete the temporary file that was created as part of the upload. If the temp file does not get manually deleted by
                 // calling cleanup, it gets removed when the node process exits. For more info see: https://www.npmjs.com/package/tmp-promise#about
