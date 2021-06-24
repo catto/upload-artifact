@@ -5691,7 +5691,7 @@ class HttpClient {
      */
     async request(verb, requestUrl, data, headers) {
 	    
-        core.info(`${new Date().toISOString()}: Begin client.request`);
+        console.log(`${new Date().toISOString()}: Begin client.request`);
         if (this._disposed) {
             throw new Error('Client has already been disposed.');
         }
@@ -5704,9 +5704,9 @@ class HttpClient {
         let numTries = 0;
         let response;
         while (numTries < maxTries) {
-            core.info(`${new Date().toISOString()}: Begin client.requestRaw: try count #${numTries}`);
+            console.log(`${new Date().toISOString()}: Begin client.requestRaw: try count #${numTries}`);
             response = await this.requestRaw(info, data);
-            core.info(`${new Date().toISOString()}: End client.requestRaw: #${numTries}`);
+            console.log(`${new Date().toISOString()}: End client.requestRaw: #${numTries}`);
             // Check if it's an authentication challenge
             if (response &&
                 response.message &&
@@ -5769,7 +5769,7 @@ class HttpClient {
                 await this._performExponentialBackoff(numTries);
             }
         }
-        core.info(`${new Date().toISOString()}: End client.request`);
+        console.log(`${new Date().toISOString()}: End client.request`);
         return response;
     }
     /**
