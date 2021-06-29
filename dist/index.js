@@ -5243,7 +5243,7 @@ exports.isDebug = isDebug;
  * @param message debug message
  */
 function debug(message) {
-    command_1.issueCommand('debug', {}, message);
+    command_1.issueCommand('debug', {}, `[${new Date().toISOString()}] ` + message);
 }
 exports.debug = debug;
 /**
@@ -5267,7 +5267,7 @@ exports.warning = warning;
  * @param message info message
  */
 function info(message) {
-    process.stdout.write(message + os.EOL);
+    process.stdout.write(`[${new Date().toISOString()}] ` + message + os.EOL);
 }
 exports.info = info;
 /**
@@ -5824,7 +5824,6 @@ class HttpClient {
             let res = new HttpClientResponse(msg);
             handleResult(null, res);
         });
-	setIntervalId = setInterval(() => console.log(`${new Date().toISOString()}: Uploading... ${req.req.connection._bytesDispatched}`), 250);
         req.on('socket', sock => {
             socket = sock;
         });
@@ -7068,7 +7067,7 @@ class UploadHttpClient {
                         failedChunkSizes += chunkSize;
                         continue;
                     }
-                    core.info(`${new Date().toISOString()}: Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
+                    core.info(`Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
                     const result = yield this.uploadChunk(httpClientIndex, parameters.resourceUrl, () => fs.createReadStream(uploadFilePath, {
                         start,
                         end,
@@ -7113,7 +7112,7 @@ class UploadHttpClient {
             // prepare all the necessary headers before making any http call
             const headers = utils_1.getUploadHeaders('application/octet-stream', true, isGzip, totalFileSize, end - start + 1, utils_1.getContentRange(start, end, uploadFileSize));
             const uploadChunkRequest = () => __awaiter(this, void 0, void 0, function* () {
-		core.info(`${new Date().toISOString()}: uploadChunkRequest`);
+		core.info(`uploadChunkRequest`);
                 const client = this.uploadHttpManager.getClient(httpClientIndex);
                 return yield client.sendStream('PUT', resourceUrl, openStream(), headers);
             });
