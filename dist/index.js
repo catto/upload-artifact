@@ -7067,7 +7067,7 @@ class UploadHttpClient {
                         failedChunkSizes += chunkSize;
                         continue;
                     }
-                    core.info(`Uploading a chunk #${chunkIndex}: start=${start}, end=${end}, resourceUrl=${parameters.resourceUrl}`);
+                    core.info(`Uploading a chunk #${chunkIndex}: start=${start}, end=${end}`);
                     const result = yield this.uploadChunk(httpClientIndex, parameters.resourceUrl, () => fs.createReadStream(uploadFilePath, {
                         start,
                         end,
