@@ -5691,7 +5691,7 @@ class HttpClient {
      */
     async request(verb, requestUrl, data, headers) {
 	    
-        console.log(`${new Date().toISOString()}: Begin client.request`);
+        console.log(`[${new Date().toISOString()}] Begin client.request`);
         if (this._disposed) {
             throw new Error('Client has already been disposed.');
         }
@@ -5704,9 +5704,9 @@ class HttpClient {
         let numTries = 0;
         let response;
         while (numTries < maxTries) {
-            console.log(`${new Date().toISOString()}: Begin client.requestRaw: try count #${numTries}`);
+            console.log(`[${new Date().toISOString()}] Begin client.requestRaw: try count #${numTries}`);
             response = await this.requestRaw(info, data);
-            console.log(`${new Date().toISOString()}: End client.requestRaw: #${numTries}`);
+            console.log(`[${new Date().toISOString()}] End client.requestRaw: #${numTries}`);
             // Check if it's an authentication challenge
             if (response &&
                 response.message &&
@@ -5761,7 +5761,7 @@ class HttpClient {
             }
             if (HttpResponseRetryCodes.indexOf(response.message.statusCode) == -1) {
                 // If not a retry code, return immediately instead of retrying
-                console.log(`${new Date().toISOString()}: End client.request`);
+                console.log(`[${new Date().toISOString()}] End client.request`);
                 return response;
             }
             numTries += 1;
@@ -5770,7 +5770,7 @@ class HttpClient {
                 await this._performExponentialBackoff(numTries);
             }
         }
-        console.log(`${new Date().toISOString()}: End client.request`);
+        console.log(`[${new Date().toISOString()}] End client.request`);
         return response;
     }
     /**
@@ -5817,10 +5817,10 @@ class HttpClient {
             }
         };
 	let setIntervalId;
-        console.log(`${new Date().toISOString()}: Start sending payload`);
+        console.log(`[${new Date().toISOString()}] Start sending payload`);
         let req = info.httpModule.request(info.options, (msg) => {
 	    clearInterval(setIntervalId);
-            console.log(`${new Date().toISOString()}: Got response`);
+            console.log(`[${new Date().toISOString()}] Got response`);
             let res = new HttpClientResponse(msg);
             handleResult(null, res);
         });
